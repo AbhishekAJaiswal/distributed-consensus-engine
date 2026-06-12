@@ -1,37 +1,80 @@
 import time
+import threading
 
 # -----------------------------------
-# LEADER ELECTION
+# CLUSTER NODES
 # -----------------------------------
 
 nodes = [1, 2, 3, 4, 5]
+
+leader = max(nodes)
+
+leader_alive = True
+
+# -----------------------------------
+# HEARTBEAT MONITOR
+# -----------------------------------
+
+def heartbeat():
+
+    global leader
+    global leader_alive
+
+    while True:
+
+        print(f"[Heartbeat] Checking Leader Node {leader}")
+
+        if not leader_alive:
+
+            print("\nLeader Failure Detected!")
+
+            if leader in nodes:
+                nodes.remove(leader)
+
+            leader = max(nodes)
+
+            print(
+                f"New Leader Elected: Node {leader}"
+            )
+
+            leader_alive = True
+
+        time.sleep(3)
+
+# Start heartbeat thread
+heartbeat_thread = threading.Thread(
+    target=heartbeat,
+    daemon=True
+)
+
+heartbeat_thread.start()
+
+# -----------------------------------
+# INITIAL ELECTION
+# -----------------------------------
 
 print("Initial Election\n")
 
 for node in nodes[:-1]:
     print(f"Node {node} is Follower")
 
-print("Node 5 is Leader")
+print(f"Node {leader} is Leader")
 
-time.sleep(2)
+time.sleep(5)
 
 # -----------------------------------
-# LEADER FAILURE RECOVERY
+# SIMULATE LEADER FAILURE
 # -----------------------------------
 
 print("\n")
 print("Leader Crash")
 print("----------------")
 
-print("Node 5 crashed")
+print(f"Node {leader} crashed")
 
-nodes.remove(5)
+leader_alive = False
 
-new_leader = max(nodes)
-
-print(f"Node {new_leader} elected as new Leader")
-
-time.sleep(2)
+time.sleep(5)
 
 # -----------------------------------
 # CLIENT TRANSACTION
@@ -39,7 +82,7 @@ time.sleep(2)
 
 print("\n")
 print("Leader Election Complete")
-print(f"Leader is Node {new_leader}")
+print(f"Leader is Node {leader}")
 
 print("\nClient Sending Transaction...")
 
@@ -61,7 +104,7 @@ print("-------------------")
 
 for node in nodes:
 
-    if node != new_leader:
+    if node != leader:
 
         print(
             f"Leader -> Node {node} : PREPARE"
@@ -85,7 +128,7 @@ accepted_count = 0
 
 for node in nodes:
 
-    if node != new_leader:
+    if node != leader:
 
         print(
             f"Leader -> Node {node} : ACCEPT"
@@ -116,3 +159,5 @@ if accepted_count >= 2:
 else:
 
     print("Consensus Failed")
+
+time.sleep(5)
