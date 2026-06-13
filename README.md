@@ -45,11 +45,9 @@ distributed-consensus-engine/
 Technologies Used
 
 * Python 3
-* Flask
 * Docker
 * Docker Compose
 * RSA Cryptography
-* REST APIs
 
 ---
 
