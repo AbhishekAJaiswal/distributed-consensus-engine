@@ -2,9 +2,9 @@ Distributed Consensus Engine
 
 Overview
 
-This project implements a distributed consensus engine using Python, Flask, Docker, Paxos, and PBFT (Practical Byzantine Fault Tolerance). The objective is to simulate how distributed nodes coordinate to reach agreement while handling failures and malicious behavior.
+This project implements a distributed consensus engine using Python, Docker, Paxos, and PBFT (Practical Byzantine Fault Tolerance). The objective is to simulate how distributed nodes coordinate to reach agreement while handling failures and malicious behavior.
 
-The system consists of five nodes running as Docker containers. Each node participates in consensus protocols and communicates using REST APIs.
+The system consists of five nodes running as Docker containers. Each node participates in consensus protocols and communicates.
 
 ---
 
