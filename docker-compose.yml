@@ -2,22 +2,12 @@ version: "3.9"
 
 services:
 
-  node1:
-    build: .
-    container_name: node1
+  consensus-engine:
 
-  node2:
     build: .
-    container_name: node2
 
-  node3:
-    build: .
-    container_name: node3
+    container_name: consensus-engine
 
-  node4:
-    build: .
-    container_name: node4
+    stdin_open: true
 
-  node5:
-    build: .
-    container_name: node5
+    tty: true
